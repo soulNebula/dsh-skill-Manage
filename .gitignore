@@ -1,0 +1,12 @@
+node_modules/
+lib/
+.artifacts/
+*.tgz
+*.log
+*.tmp
+.DS_Store
+Thumbs.db
+.env
+.env.*
+!.env.example
+config.broken-*.json
