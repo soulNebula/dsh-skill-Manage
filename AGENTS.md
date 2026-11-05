@@ -10,6 +10,7 @@ This file governs the whole `dsh-skill-manage` repository.
 - RPC channel: `/skill-manage`
 - Data directory: `$DSH_HOME/dsh-skill-manage/`
 - Config file: `$DSH_HOME/dsh-skill-manage/config.json` (absolute skill paths)
+- Framework: `dsh-plugin-product-framework` framework pack v1; `.framework.json` records variables/layers, mapping in `docs/FRAMEWORK-LAYERS.md`.
 
 ## Boundaries
 

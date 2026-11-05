@@ -33,3 +33,13 @@ test('the Python validator ships with the package', async () => {
   assert.match(script, /def audit\(/u)
   assert.match(script, /json\.dumps/u)
 })
+
+test('records the framework pack provenance', async () => {
+  const meta = JSON.parse(await readFile(join(root, '.framework.json'), 'utf8'))
+  assert.equal(meta.format, 'dsh-framework-pack')
+  assert.equal(meta.id, 'dsh-plugin-product-framework')
+  assert.equal(meta.variables.name, 'dsh-skill-manage')
+  for (const layer of ['00-base', '10-core', '20-host', '30-agent', '40-ui', '50-tests']) {
+    assert.ok(meta.layers.includes(layer), layer)
+  }
+})

@@ -17,7 +17,7 @@ import { publishRuntime } from './host/runtime.js'
 import { createStore, resolveDshHome } from './host/store.js'
 
 export const name = 'dsh-skill-manage'
-export const VERSION = '0.1.0'
+export const VERSION = '0.2.0'
 export const CHANNEL = '/skill-manage'
 
 export const Config = z.object({

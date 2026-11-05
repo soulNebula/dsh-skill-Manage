@@ -1,0 +1,23 @@
+{
+  "format": "dsh-framework-pack",
+  "version": 1,
+  "id": "dsh-plugin-product-framework",
+  "name": "DSH 产品型插件（core / host / agent / ui 四层）",
+  "variables": {
+    "name": "dsh-skill-manage",
+    "display": "Skill 管理",
+    "prefix": "skm",
+    "channel": "/skill-manage",
+    "dataDir": "dsh-skill-manage",
+    "tool": "skm_skills"
+  },
+  "layers": [
+    "00-base",
+    "10-core",
+    "20-host",
+    "30-agent",
+    "40-ui",
+    "50-tests"
+  ],
+  "createdAt": "2026-11-05T09:56:40.000Z"
+}

@@ -95,6 +95,12 @@ plugin_manager(action: install_bundle, target: "C:/Users/<you>/.dsh/plugins/dsh-
 - 手改这个文件也可以，重启 DSH 后生效；坏条目会被逐条丢弃，不会影响其余技能。
 - 仓库里的 `config.example.json` 是同一格式的样例，方便手写或排查。
 
+### 框架来源
+
+本项目按 `dsh-plugin-product-framework` 的 **framework pack v1** 对齐，根目录的 `.framework.json` 记录框架 id、变量和使用的层；层到文件的映射见 [docs/FRAMEWORK-LAYERS.md](docs/FRAMEWORK-LAYERS.md)。
+
+更新框架后，桌面上的框架文件夹不需要复制进本项目：在插件页选中 `dsh-plugin-product-framework`，点「重新读取」，或完全重启 DSH，插件会按磁盘上的最新 `SKILL.md` 重新注册。
+
 ## 设置
 
 右上角齿轮打开设置：
