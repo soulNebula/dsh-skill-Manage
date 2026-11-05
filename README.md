@@ -16,6 +16,7 @@
 - **查看与编辑**：文件树 + 文本编辑器，可编辑 `SKILL.md`、`references/`、`scripts/`、`templates/` 里的文本文件；保存 `SKILL.md` 后技能信息自动刷新。
 - **实时生效**：DSH 有 `skills/change` 与 `commands/change` 事件，登记/移除不需要重启；只有首次安装 Host 插件需要完全退出重开 DSH。
 - **只读 Agent 工具**：附带一个「Skill 管理」会话预设，模型可用 `skm_skills` / `skm_read` 查看技能内容，但不能改。
+- **侧栏宽度**：DSH 左侧栏右边缘自带拖拽条，插件把它从 8px 加宽到 14px 并画出把手；拖动即可调整宽度，DSH 会记住这个偏好。
 
 ## 安装
 

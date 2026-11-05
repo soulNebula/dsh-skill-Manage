@@ -616,6 +616,33 @@ export const STYLE = `
 .skm-guideFoot { align-items: center; justify-content: space-between; gap: 10px; }
 .skm-guidePath { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--skm-muted); font-size: 11px; }
 
+
+/* DSH shell column drag handles: the shipped 8px handle is invisible.
+   Widen the hit area and draw a subtle grip so the sidebar edge can be
+   discovered; the shell already persists the dragged width. */
+[class*="_handle"][data-side] {
+  width: 14px !important;
+  margin-left: -7px !important;
+  z-index: 30 !important;
+}
+[class*="_handle"][data-side]::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 3px;
+  height: 34px;
+  transform: translate(-50%, -50%);
+  border-radius: 999px;
+  background: var(--dsw-alias-border-l2, #8a8f98);
+  opacity: .22;
+  pointer-events: none;
+  transition: opacity .12s;
+}
+[class*="_handle"][data-side]:hover::after,
+[class*="_handle"][data-side][data-dragging]::after {
+  opacity: .85;
+}
 @media (max-width: 980px) {
   .skm-body { grid-template-columns: 250px minmax(0, 1fr); }
   .skm-files { grid-template-columns: 220px minmax(0, 1fr); }
