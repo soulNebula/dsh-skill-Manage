@@ -44,8 +44,9 @@ test('records the framework pack provenance', async () => {
   }
 })
 
-test('bundles the framework extraction guide', async () => {
-  const guide = await readFile(join(root, 'docs', 'FRAMEWORK-EXTRACTION-GUIDE.md'), 'utf8')
+test('bundles the active skill authoring guide', async () => {
+  const guide = await readFile(join(root, 'docs', 'SKILL-AUTHORING-GUIDE.md'), 'utf8')
   assert.match(guide, /从一个项目提取框架/u)
   assert.ok(guide.length > 5000)
+  assert.equal(await readFile(join(root, 'docs', 'archive', 'skill-authoring-guide-2026-11-06.md'), 'utf8').then(t => t.length > 5000).catch(() => false), true)
 })

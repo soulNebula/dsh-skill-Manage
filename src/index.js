@@ -19,10 +19,10 @@ import { publishRuntime } from './host/runtime.js'
 import { createStore, resolveDshHome } from './host/store.js'
 
 export const name = 'dsh-skill-manage'
-export const VERSION = '0.3.0'
+export const VERSION = '0.3.1'
 export const CHANNEL = '/skill-manage'
 
-const GUIDE_PATH = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'FRAMEWORK-EXTRACTION-GUIDE.md')
+const GUIDE_PATH = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'SKILL-AUTHORING-GUIDE.md')
 
 async function readGuide() {
   try {
