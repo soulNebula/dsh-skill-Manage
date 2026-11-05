@@ -230,3 +230,29 @@ whenToUse: 用户说“用 hello-skill 打个招呼”。
 
 - 只做问候，不执行命令。
 ```
+
+
+---
+
+## 10. 框架包（framework pack）也是普通技能
+
+`dsh-plugin-product-framework` 更新后是一个 **framework pack**，但它对「小鱼的技能」来说仍然只是一个普通技能文件夹，导入规则不变：
+
+```text
+dsh-plugin-product-framework/
+  SKILL.md              # 必须；frontmatter name/description
+  framework.json        # 框架包元数据，可选；普通技能不需要
+  layers/               # 框架自己的分层模板
+  references/           # 可选脚手架
+  scripts/              # 可选脚手架
+  templates/            # 可选脚手架
+  integrations/         # 可选
+```
+
+- 插件只保存根目录的**绝对路径**并注册 `SKILL.md`；**不会**把 `layers/`、`framework.json` 复制到插件数据目录。
+- `framework.json` / `layers/` 不需要特殊处理；它们只是文件夹里的文本文件，会出现在文件树里，可查看/编辑。
+- 框架文件更新后：
+  - 插件页选中该技能，点「重新读取」；或
+  - 完全重启 DSH。
+  两种方式都会按磁盘上的最新 `SKILL.md` 重新注册。
+- 插件不充当框架的存储层，也不引用其它框架 skill 的 `layers/`；一个文件夹就是一个技能。
