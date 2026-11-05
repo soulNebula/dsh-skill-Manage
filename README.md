@@ -97,9 +97,17 @@ plugin_manager(action: install_bundle, target: "C:/Users/<you>/.dsh/plugins/dsh-
 
 ### 框架来源
 
-本项目按 `dsh-plugin-product-framework` 的 **framework pack v1** 对齐，根目录的 `.framework.json` 记录框架 id、变量和使用的层；层到文件的映射见 [docs/FRAMEWORK-LAYERS.md](docs/FRAMEWORK-LAYERS.md)。
+本项目按 `dsh-plugin-product-framework` 的 **framework pack v1** 对齐，根目录的 `.framework.json` 记录框架 id、变量和使用的层；层到文件的映射见 [docs/FRAMEWORK-LAYERS.md](docs/FRAMEWORK-LAYERS.md)。最新框架包新增的 `FRAMEWORK-EXTRACTION-GUIDE.md` 已内置到本插件（见下一节）。
 
 更新框架后，桌面上的框架文件夹不需要复制进本项目：在插件页选中 `dsh-plugin-product-framework`，点「重新读取」，或完全重启 DSH，插件会按磁盘上的最新 `SKILL.md` 重新注册。
+
+## 制作新 Skill 的指南
+
+仓库内置了 `docs/FRAMEWORK-EXTRACTION-GUIDE.md`（来自最新框架包），说明怎样把一个项目的架构、链路和工程模式提取成一个**独立的 Skill**，而不是复制业务代码。
+
+- 在「添加 Skill」弹窗里点 **「制作 Skill 指南」**，可以直接在 DSH 里阅读全文，支持复制；
+- 指南涵盖：判断值不值得提取、读源项目的顺序、四层映射、契约/失败语义、生产模式、安全边界、验收清单、最小骨架；
+- 也可以直接打开 [docs/FRAMEWORK-EXTRACTION-GUIDE.md](docs/FRAMEWORK-EXTRACTION-GUIDE.md)。
 
 ## 设置
 

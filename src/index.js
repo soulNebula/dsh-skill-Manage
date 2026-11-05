@@ -3,7 +3,9 @@
 // Wires the JSON store, the managed-skill service, the RPC channel used by the
 // page, and the runtime bridge used by the read-only agent tools. Every live
 // registration lives inside an effect so uninstalling the plugin releases it.
-import { isAbsolute, join } from 'node:path'
+import { readFile } from 'node:fs/promises'
+import { dirname, isAbsolute, join } from 'node:path'
+import { fileURLToPath } from 'node:url'
 
 import { createUserMessage } from '@deepseek-ai/dsh-llm'
 import z from '@deepseek-ai/schemastery'
@@ -17,8 +19,18 @@ import { publishRuntime } from './host/runtime.js'
 import { createStore, resolveDshHome } from './host/store.js'
 
 export const name = 'dsh-skill-manage'
-export const VERSION = '0.2.0'
+export const VERSION = '0.3.0'
 export const CHANNEL = '/skill-manage'
+
+const GUIDE_PATH = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'FRAMEWORK-EXTRACTION-GUIDE.md')
+
+async function readGuide() {
+  try {
+    return { path: GUIDE_PATH, text: await readFile(GUIDE_PATH, 'utf8') }
+  } catch {
+    throw new AppError('guide-missing', '插件内置的 Skill 制作指南缺失，请重新安装插件。')
+  }
+}
 
 export const Config = z.object({
   dataDir: z.string().default(''),
@@ -72,6 +84,7 @@ export function apply(ctx, config = {}) {
       await settled()
       return skills.writeConfig(payload)
     },
+    'guide/read': async () => readGuide(),
     'skill/audit-path': async payload => {
       const dir = await resolveSkillDir(payload?.path)
       const report = await auditSkill(dir, { pythonPath, logger })

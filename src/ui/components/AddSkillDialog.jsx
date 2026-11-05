@@ -2,13 +2,15 @@ import { useEffect, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 
 import { AuditReport } from './AuditReport.jsx'
-import { FolderIcon, PlusIcon, XIcon } from './icons.jsx'
+import { GuideDialog } from './GuideDialog.jsx'
+import { BookIcon, FolderIcon, PlusIcon, XIcon } from './icons.jsx'
 
 export function AddSkillDialog({ api, t, pickDirectory, onClose, onAdded }) {
   const [path, setPath] = useState('')
   const [report, setReport] = useState(null)
   const [busy, setBusy] = useState('')
   const [error, setError] = useState('')
+  const [guideOpen, setGuideOpen] = useState(false)
   const inputRef = useRef(null)
 
   useEffect(() => {
@@ -17,11 +19,11 @@ export function AddSkillDialog({ api, t, pickDirectory, onClose, onAdded }) {
 
   useEffect(() => {
     const onKey = event => {
-      if (event.key === 'Escape' && !busy) onClose()
+      if (event.key === 'Escape' && !busy && !guideOpen) onClose()
     }
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
-  }, [busy, onClose])
+  }, [busy, guideOpen, onClose])
 
   async function browse() {
     setBusy('browse')
@@ -114,6 +116,11 @@ export function AddSkillDialog({ api, t, pickDirectory, onClose, onAdded }) {
 
           {report && <AuditReport report={report} t={t} />}
           {error && <p className="skm-error" role="alert">{error}</p>}
+          <div className="skm-guideOpenRow">
+            <BookIcon size={15} />
+            <button className="skm-linkBtn" type="button" onClick={() => setGuideOpen(true)}>{t('guideOpen')}</button>
+            <span className="skm-hint is-small">{t('guideHint')}</span>
+          </div>
           <p className="skm-hint is-small">{t('menuTip')}</p>
         </div>
 
@@ -127,6 +134,7 @@ export function AddSkillDialog({ api, t, pickDirectory, onClose, onAdded }) {
           </button>
         </footer>
       </div>
+      {guideOpen && <GuideDialog api={api} t={t} onClose={() => setGuideOpen(false)} />}
     </div>
   ), document.body)
 }

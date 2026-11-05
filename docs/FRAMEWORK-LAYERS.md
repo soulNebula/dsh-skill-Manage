@@ -29,3 +29,5 @@
 
 - 在插件页选中该技能，点「重新读取」即可刷新 `SKILL.md` / 描述 / 命令；
 - 或完全退出 DSH 再打开，插件会按磁盘上的最新内容重新注册。
+
+最新框架包另外提供了 `FRAMEWORK-EXTRACTION-GUIDE.md`；本插件把它复制到 `docs/FRAMEWORK-EXTRACTION-GUIDE.md`，并在「添加 Skill」弹窗里内置了阅读入口。

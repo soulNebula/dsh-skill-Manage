@@ -598,6 +598,24 @@ export const STYLE = `
 }
 .skm-configEditor:focus-visible { outline: 2px solid var(--skm-brand); outline-offset: 1px; }
 
+
+.skm-guideOpenRow { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; color: var(--skm-muted); }
+.skm-guideOpenRow .skm-linkBtn { color: var(--skm-brand); }
+.skm-guideDialog { width: min(920px, 100%); }
+.skm-guideBody { flex: 1 1 auto; min-height: 0; overflow: auto; background: var(--skm-bg); }
+.skm-guideText {
+  margin: 0;
+  padding: 14px 18px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  font-family: var(--dsw-alias-font-mono, ui-monospace, SFMono-Regular, Menlo, Consolas, monospace);
+  font-size: 12px;
+  line-height: 1.65;
+  color: var(--skm-text);
+}
+.skm-guideFoot { align-items: center; justify-content: space-between; gap: 10px; }
+.skm-guidePath { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--skm-muted); font-size: 11px; }
+
 @media (max-width: 980px) {
   .skm-body { grid-template-columns: 250px minmax(0, 1fr); }
   .skm-files { grid-template-columns: 220px minmax(0, 1fr); }

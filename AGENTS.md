@@ -11,6 +11,7 @@ This file governs the whole `dsh-skill-manage` repository.
 - Data directory: `$DSH_HOME/dsh-skill-manage/`
 - Config file: `$DSH_HOME/dsh-skill-manage/config.json` (absolute skill paths)
 - Framework: `dsh-plugin-product-framework` framework pack v1; `.framework.json` records variables/layers, mapping in `docs/FRAMEWORK-LAYERS.md`.
+- Bundled guide: `docs/FRAMEWORK-EXTRACTION-GUIDE.md`, served by the `guide/read` RPC and opened from the Add Skill dialog.
 
 ## Boundaries
 

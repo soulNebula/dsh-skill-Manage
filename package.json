@@ -1,6 +1,6 @@
 {
   "name": "dsh-skill-manage",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Skill 管理 for DeepSeek Harness: import skill folders, register them as live DSH skills and slash commands, browse and edit their files.",
   "type": "module",
   "icon": "./icon.svg",

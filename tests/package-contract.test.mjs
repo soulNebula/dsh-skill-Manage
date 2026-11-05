@@ -43,3 +43,9 @@ test('records the framework pack provenance', async () => {
     assert.ok(meta.layers.includes(layer), layer)
   }
 })
+
+test('bundles the framework extraction guide', async () => {
+  const guide = await readFile(join(root, 'docs', 'FRAMEWORK-EXTRACTION-GUIDE.md'), 'utf8')
+  assert.match(guide, /从一个项目提取框架/u)
+  assert.ok(guide.length > 5000)
+})
