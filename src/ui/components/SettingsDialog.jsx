@@ -23,7 +23,7 @@ export function SettingsDialog({
   const [configLoading, setConfigLoading] = useState(true)
   const [configSaving, setConfigSaving] = useState(false)
   const [configError, setConfigError] = useState('')
-  const [copied, setCopied] = useState(false)
+  const [copied, setCopied] = useState('')
 
   const loadConfig = useCallback(async () => {
     setConfigLoading(true)
@@ -80,15 +80,14 @@ export function SettingsDialog({
     }
   }
 
-  async function copyConfigPath() {
-    const path = config?.path || info?.configPath
-    if (!path) return
+  async function copyValue(key, value) {
+    if (!value) return
     try {
-      await navigator.clipboard.writeText(path)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 1500)
+      await navigator.clipboard.writeText(value)
+      setCopied(key)
+      setTimeout(() => setCopied(''), 1500)
     } catch {
-      setCopied(false)
+      setCopied('')
     }
   }
 
@@ -157,15 +156,23 @@ export function SettingsDialog({
             <dl className="skm-infoGrid">
               <dt>{t('versionLabel')}</dt>
               <dd>{info?.version ?? '—'}</dd>
+              <dt>{t('sourceDirLabel')}</dt>
+              <dd className="skm-infoPath">
+                <span title={info?.pluginDir}>{info?.pluginDir ?? '—'}</span>
+                <button className="skm-iconBtn is-tiny" type="button" onClick={() => copyValue('source', info?.pluginDir)} title={t('copyPath')} aria-label={t('copyPath')}>
+                  <CopyIcon size={13} />
+                </button>
+                {copied === 'source' && <span className="skm-copied">{t('copied')}</span>}
+              </dd>
               <dt>{t('dataDirLabel')}</dt>
               <dd title={info?.dataDir}>{info?.dataDir ?? '—'}</dd>
               <dt>{t('configPathLabel')}</dt>
               <dd className="skm-infoPath">
                 <span title={info?.configPath}>{info?.configPath ?? '—'}</span>
-                <button className="skm-iconBtn is-tiny" type="button" onClick={copyConfigPath} title={t('copyPath')} aria-label={t('copyPath')}>
+                <button className="skm-iconBtn is-tiny" type="button" onClick={() => copyValue('config', config?.path || info?.configPath)} title={t('copyPath')} aria-label={t('copyPath')}>
                   <CopyIcon size={13} />
                 </button>
-                {copied && <span className="skm-copied">{t('copied')}</span>}
+                {copied === 'config' && <span className="skm-copied">{t('copied')}</span>}
               </dd>
               <dt>{t('pythonLabel')}</dt>
               <dd>

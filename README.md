@@ -115,7 +115,7 @@ plugin_manager(action: install_bundle, target: "C:/Users/<you>/.dsh/plugins/dsh-
 
 - **背景主题**：跟随系统 / 浅色 / 深色。直接调用 DSH 的 `theme.setTheme()`，侧栏和所有页面一起切换，DSH 会记住这个偏好。
 - **界面字号**：12–20 px，只缩放「小鱼的技能」页面（页面整体 zoom），不改 DSH 其它页面。
-- **插件信息**：当前版本、数据目录、配置文件路径、Python 校验器状态。
+- **插件信息**：当前版本、源码目录、数据目录、配置文件路径、Python 校验器状态。
 - **配置文件**：直接编辑 `config.json`。保存前会校验 JSON 与每条技能记录；坏记录会被拒绝，不会静默丢弃。
 
 字号存在 `config.json` 的 `settings.fontSize` 里；主题存在 DSH 自己的主题偏好里。

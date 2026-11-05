@@ -19,9 +19,10 @@ import { publishRuntime } from './host/runtime.js'
 import { createStore, resolveDshHome } from './host/store.js'
 
 export const name = 'dsh-skill-manage'
-export const VERSION = '0.3.1'
+export const VERSION = '0.3.2'
 export const CHANNEL = '/skill-manage'
 
+const PLUGIN_DIR = dirname(dirname(fileURLToPath(import.meta.url)))
 const GUIDE_PATH = join(dirname(fileURLToPath(import.meta.url)), '..', 'docs', 'SKILL-AUTHORING-GUIDE.md')
 
 async function readGuide() {
@@ -62,7 +63,7 @@ export function apply(ctx, config = {}) {
   const routes = {
     'app/info': async () => {
       await settled()
-      return skills.info()
+      return { ...(await skills.info()), pluginDir: PLUGIN_DIR }
     },
     'skill/list': async () => {
       await settled()
