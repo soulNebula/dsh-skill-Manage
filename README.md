@@ -92,6 +92,7 @@ plugin_manager(action: install_bundle, target: "C:/Users/<you>/.dsh/plugins/dsh-
 - `path` 是**绝对路径**，也是唯一的事实来源；技能内容不复制进数据目录。
 - 文件损坏时会保留为 `config.broken-<时间戳>.json`，插件按空列表启动，避免整个插件起不来。
 - 手改这个文件也可以，重启 DSH 后生效；坏条目会被逐条丢弃，不会影响其余技能。
+- 仓库里的 `config.example.json` 是同一格式的样例，方便手写或排查。
 
 ## 导入规范
 

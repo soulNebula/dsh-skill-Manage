@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "updatedAt": 0,
+  "skills": [
+    {
+      "id": "skm_example000001",
+      "name": "my-skill",
+      "description": "A skill folder registered by absolute path.",
+      "path": "C:\\Users\\you\\skills\\my-skill",
+      "command": "my-skill",
+      "menuEnabled": true,
+      "addedAt": 0
+    }
+  ]
+}

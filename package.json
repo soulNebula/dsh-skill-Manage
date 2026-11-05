@@ -17,6 +17,7 @@
     "python/*.py",
     "docs/*.md",
     "cordis.patch.yml",
+    "config.example.json",
     "icon.svg",
     "README.md",
     "AGENTS.md",
