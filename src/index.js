@@ -56,6 +56,22 @@ export function apply(ctx, config = {}) {
       await settled()
       return skills.list()
     },
+    'settings/get': async () => {
+      await settled()
+      return skills.getSettings()
+    },
+    'settings/save': async payload => {
+      await settled()
+      return skills.saveSettings(payload)
+    },
+    'config/read': async () => {
+      await settled()
+      return skills.readConfig()
+    },
+    'config/write': async payload => {
+      await settled()
+      return skills.writeConfig(payload)
+    },
     'skill/audit-path': async payload => {
       const dir = await resolveSkillDir(payload?.path)
       const report = await auditSkill(dir, { pythonPath, logger })
@@ -112,9 +128,9 @@ export function apply(ctx, config = {}) {
   ctx.inject(['connection', 'webServer'], connectionCtx => {
     const connection = connectionCtx.connection
     connectionCtx.effect(
-      () => (typeof connection.register === 'function'
-        ? connection.register(connectionCtx, CHANNEL, handler)
-        : connection.rpc.handle(CHANNEL, handler)),
+      () => (typeof connection.rpc?.handle === 'function'
+        ? connection.rpc.handle(CHANNEL, handler)
+        : connection.register(connectionCtx, CHANNEL, handler)),
       'skill-manage: rpc channel',
     )
   })

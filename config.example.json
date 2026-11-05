@@ -11,5 +11,8 @@
       "menuEnabled": true,
       "addedAt": 0
     }
-  ]
+  ],
+  "settings": {
+    "fontSize": 14
+  }
 }

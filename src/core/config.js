@@ -1,6 +1,7 @@
 // Versioned shape of the plugin's own config file (`config.json`).
 // The file is the source of truth: every managed skill is stored as its
-// absolute folder path plus the slash-command metadata derived from it.
+// absolute folder path plus the slash-command metadata derived from it, and
+// the plugin's own preferences live in `settings`.
 import { ID_PATTERN } from './ids.js'
 import {
   CONFIG_VERSION,
@@ -12,6 +13,17 @@ import {
 } from './model.js'
 
 const CONTROL = /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/u
+
+export const FONT_SIZE = Object.freeze({ min: 12, max: 20, default: 14 })
+export const SETTINGS_DEFAULTS = Object.freeze({ fontSize: FONT_SIZE.default })
+
+export function normalizeSettings(raw) {
+  const value = Number(raw?.fontSize)
+  const fontSize = Number.isInteger(value) && value >= FONT_SIZE.min && value <= FONT_SIZE.max
+    ? value
+    : FONT_SIZE.default
+  return { fontSize }
+}
 
 function normalizeEntry(raw) {
   if (!raw || typeof raw !== 'object') return null
@@ -36,9 +48,9 @@ function normalizeEntry(raw) {
 }
 
 /**
- * Normalize an on-disk config file. A bad entry is dropped item by item;
- * the file as a whole never throws, because a single hand-edited mistake must
- * not take the plugin down. Duplicate ids/names/paths keep the first entry.
+ * Normalize an on-disk config file. A bad entry is dropped item by item; the
+ * file as a whole never throws, because a single hand-edited mistake must not
+ * take the plugin down. Duplicate ids/names/paths keep the first entry.
  */
 export function normalizeConfig(raw) {
   const source = raw && typeof raw === 'object' ? raw : {}
@@ -59,12 +71,18 @@ export function normalizeConfig(raw) {
   return {
     version: CONFIG_VERSION,
     updatedAt: Number.isFinite(source.updatedAt) ? Number(source.updatedAt) : 0,
+    settings: normalizeSettings(source.settings),
     skills,
   }
 }
 
 export function emptyConfig() {
-  return { version: CONFIG_VERSION, updatedAt: 0, skills: [] }
+  return {
+    version: CONFIG_VERSION,
+    updatedAt: 0,
+    settings: { ...SETTINGS_DEFAULTS },
+    skills: [],
+  }
 }
 
 export function configEntry(entry) {

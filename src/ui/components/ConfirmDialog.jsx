@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 import { AlertIcon, XIcon } from './icons.jsx'
 
@@ -15,7 +16,7 @@ export function ConfirmDialog({ title, children, confirmLabel, cancelLabel, dang
     return () => window.removeEventListener('keydown', onKey)
   }, [onCancel])
 
-  return (
+  return createPortal((
     <div className="skm-overlay" onMouseDown={event => { if (event.target === event.currentTarget) onCancel() }}>
       <div className={`skm-dialog skm-confirm${danger ? ' is-danger' : ''}`} role="dialog" aria-modal="true" aria-label={title}>
         <header className="skm-dialogHead">
@@ -37,5 +38,5 @@ export function ConfirmDialog({ title, children, confirmLabel, cancelLabel, dang
         </footer>
       </div>
     </div>
-  )
+  ), document.body)
 }

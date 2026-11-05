@@ -75,6 +75,7 @@ plugin_manager(action: install_bundle, target: "C:/Users/<you>/.dsh/plugins/dsh-
 {
   "version": 1,
   "updatedAt": 1790000000000,
+  "settings": { "fontSize": 14 },
   "skills": [
     {
       "id": "skm_xxxxxxxxxxxx",
@@ -93,6 +94,17 @@ plugin_manager(action: install_bundle, target: "C:/Users/<you>/.dsh/plugins/dsh-
 - 文件损坏时会保留为 `config.broken-<时间戳>.json`，插件按空列表启动，避免整个插件起不来。
 - 手改这个文件也可以，重启 DSH 后生效；坏条目会被逐条丢弃，不会影响其余技能。
 - 仓库里的 `config.example.json` 是同一格式的样例，方便手写或排查。
+
+## 设置
+
+右上角齿轮打开设置：
+
+- **背景主题**：跟随系统 / 浅色 / 深色。直接调用 DSH 的 `theme.setTheme()`，侧栏和所有页面一起切换，DSH 会记住这个偏好。
+- **界面字号**：12–20 px，只缩放「小鱼的技能」页面（页面整体 zoom），不改 DSH 其它页面。
+- **插件信息**：当前版本、数据目录、配置文件路径、Python 校验器状态。
+- **配置文件**：直接编辑 `config.json`。保存前会校验 JSON 与每条技能记录；坏记录会被拒绝，不会静默丢弃。
+
+字号存在 `config.json` 的 `settings.fontSize` 里；主题存在 DSH 自己的主题偏好里。
 
 ## 导入规范
 

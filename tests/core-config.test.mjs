@@ -51,3 +51,11 @@ test('menuEnabled defaults to true and command falls back to the name', () => {
   assert.equal(config.skills[0].command, 'my-skill')
   assert.equal(config.skills[0].menuEnabled, true)
 })
+
+test('normalizes the plugin settings with a safe font-size range', () => {
+  assert.equal(normalizeConfig({}).settings.fontSize, 14)
+  assert.equal(normalizeConfig({ settings: { fontSize: 18 } }).settings.fontSize, 18)
+  assert.equal(normalizeConfig({ settings: { fontSize: 9 } }).settings.fontSize, 14)
+  assert.equal(normalizeConfig({ settings: { fontSize: 21 } }).settings.fontSize, 14)
+  assert.equal(normalizeConfig({ settings: { fontSize: 14.5 } }).settings.fontSize, 14)
+})

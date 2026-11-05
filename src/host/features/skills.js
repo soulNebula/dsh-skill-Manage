@@ -5,7 +5,7 @@
 import { readFile, rm } from 'node:fs/promises'
 import { join } from 'node:path'
 
-import { configEntry, normalizeConfig } from '../../core/config.js'
+import { FONT_SIZE, SETTINGS_DEFAULTS, configEntry, normalizeConfig, normalizeSettings } from '../../core/config.js'
 import { assertId, newId } from '../../core/ids.js'
 import {
   CONFIG_VERSION,
@@ -49,6 +49,7 @@ export function createSkillsService({ store, logger, pythonPath = '', version = 
   let skillsService
   let commandsService
   let mutation = Promise.resolve()
+  let settingsValue = { ...SETTINGS_DEFAULTS }
   const docs = new Map()
   const status = new Map()
   const skillDisposers = new Map()
@@ -232,6 +233,7 @@ export function createSkillsService({ store, logger, pythonPath = '', version = 
     await store.saveConfig({
       version: CONFIG_VERSION,
       updatedAt: Date.now(),
+      settings: settingsValue,
       skills: entries.map(configEntry),
     })
   }
@@ -242,6 +244,7 @@ export function createSkillsService({ store, logger, pythonPath = '', version = 
       return null
     })
     const config = normalizeConfig(raw)
+    settingsValue = config.settings
     entries = config.skills
     for (const entry of entries) await refreshEntry(entry, { persist: false })
     // Drop entries that the normalizer rejected? Keep the file as it is until
@@ -413,12 +416,73 @@ export function createSkillsService({ store, logger, pythonPath = '', version = 
       dataDir: store.paths.root,
       configPath: store.paths.config,
       count: entries.length,
+      settings: { ...settingsValue },
       python: {
         available: Boolean(python),
         command: python?.command ?? null,
         version: python?.version ?? null,
       },
     }
+  }
+
+  function getSettings() {
+    return { ...settingsValue }
+  }
+
+  async function saveSettings(payload = {}) {
+    return serial(async () => {
+      const value = Number(payload.fontSize)
+      if (!Number.isInteger(value) || value < FONT_SIZE.min || value > FONT_SIZE.max) {
+        throw new AppError('bad-font-size', `字号需要在 ${FONT_SIZE.min}–${FONT_SIZE.max} 之间。`)
+      }
+      settingsValue = normalizeSettings({ ...settingsValue, fontSize: value })
+      await save()
+      return { ...settingsValue }
+    })
+  }
+
+  async function readConfigText() {
+    try {
+      return await readFile(store.paths.config, 'utf8')
+    } catch (error) {
+      if (error?.code !== 'ENOENT') throw error
+      return `${JSON.stringify({ version: CONFIG_VERSION, updatedAt: Date.now(), settings: settingsValue, skills: entries.map(configEntry) }, null, 1)}
+`
+    }
+  }
+
+  async function readConfig() {
+    return { path: store.paths.config, text: await readConfigText() }
+  }
+
+  async function writeConfig(payload = {}) {
+    return serial(async () => {
+      const text = String(payload.text ?? '')
+      if (!text.trim()) throw new AppError('config-empty', '配置文件不能为空。')
+      let parsed
+      try {
+        parsed = JSON.parse(text)
+      } catch (error) {
+        throw new AppError('config-invalid', `JSON 格式错误：${error?.message ?? 'parse failed'}`)
+      }
+      if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
+        throw new AppError('config-invalid', '配置文件必须是一个 JSON 对象。')
+      }
+      const next = normalizeConfig(parsed)
+      const requested = Array.isArray(parsed.skills) ? parsed.skills.length : 0
+      if (next.skills.length !== requested) {
+        throw new AppError('config-invalid', `有 ${requested - next.skills.length} 条技能记录格式不正确，已拒绝保存。请检查 id、name、path、command。`)
+      }
+      for (const id of [...skillDisposers.keys()]) disposeSkill(id)
+      for (const id of [...commandDisposers.keys()]) disposeCommand(id)
+      entries = next.skills
+      settingsValue = next.settings
+      docs.clear()
+      status.clear()
+      for (const entry of entries) await refreshEntry(entry, { persist: false })
+      await save()
+      return { path: store.paths.config, text: await readConfigText(), skills: list(), settings: { ...settingsValue } }
+    })
   }
 
   function agentList() {
@@ -470,6 +534,10 @@ export function createSkillsService({ store, logger, pythonPath = '', version = 
     writeFile: writeFileById,
     info,
     view,
+    getSettings,
+    saveSettings,
+    readConfig,
+    writeConfig,
     setSkills,
     setCommands,
     dispose,

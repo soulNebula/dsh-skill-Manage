@@ -146,3 +146,33 @@ test('remove unregisters everything; deleteFiles removes the folder', async () =
     await rm(work, { recursive: true, force: true })
   }
 })
+
+test('settings and the raw config file round-trip through the service', async () => {
+  const { work, service, fake, skillDir } = await fixture()
+  try {
+    const view = await service.add({ path: skillDir })
+    const saved = await service.saveSettings({ fontSize: 18 })
+    assert.equal(saved.fontSize, 18)
+
+    const read = await service.readConfig()
+    assert.ok(read.path.endsWith('config.json'))
+    assert.match(read.text, /"fontSize": 18/u)
+
+    const parsed = JSON.parse(read.text)
+    parsed.skills[0].command = 'beta-cmd'
+    const written = await service.writeConfig({ text: JSON.stringify(parsed, null, 1) })
+    assert.equal(written.skills[0].command, 'beta-cmd')
+    assert.ok(fake.commands.map.has('beta-cmd'))
+    assert.equal(written.settings.fontSize, 18)
+
+    await assert.rejects(() => service.writeConfig({ text: '{ not json' }), /JSON/u)
+    await assert.rejects(
+      () => service.writeConfig({ text: JSON.stringify({ ...parsed, skills: [...parsed.skills, { id: 'broken' }] }) }),
+      /格式不正确/u,
+    )
+    assert.equal(view.id, written.skills[0].id)
+  } finally {
+    service.dispose()
+    await rm(work, { recursive: true, force: true })
+  }
+})

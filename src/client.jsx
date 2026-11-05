@@ -32,8 +32,8 @@ function PanelIcon({ size = 18, active = false }) {
   )
 }
 
-function MainPage({ rpc, t, pickDirectory, label }) {
-  return <App rpc={rpc} t={t} pickDirectory={pickDirectory} label={label} />
+function MainPage({ rpc, t, pickDirectory, label, getTheme, setTheme }) {
+  return <App rpc={rpc} t={t} pickDirectory={pickDirectory} label={label} getTheme={getTheme} setTheme={setTheme} />
 }
 
 export function apply(ctx) {
@@ -49,6 +49,13 @@ export function apply(ctx) {
   const t = ctx.locale.bind(NS)
   const rpc = ctx.get('connection').rpc
   const uiWorkspace = ctx.get('uiWorkspace')
+  const themeService = ctx.get('theme')
+  const getTheme = () => {
+    try { return themeService?.getTheme?.().preference ?? 'system' } catch { return 'system' }
+  }
+  const setTheme = id => {
+    try { themeService?.setTheme?.(id) } catch { /* theme is optional */ }
+  }
   const pickDirectory = async () => {
     if (typeof uiWorkspace?.pickDirectory !== 'function') return null
     try {
@@ -62,7 +69,7 @@ export function apply(ctx) {
     name: 'main',
     key: PANEL_ID,
     locale: NS,
-    inject: () => ({ rpc, t, pickDirectory, label: PANEL_LABEL }),
+    inject: () => ({ rpc, t, pickDirectory, label: PANEL_LABEL, getTheme, setTheme }),
   }, MainPage))
 
   ctx.slots.inject('sidebar.panellist', () => ctx.slots.register({

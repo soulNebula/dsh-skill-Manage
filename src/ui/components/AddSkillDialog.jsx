@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { createPortal } from 'react-dom'
 
 import { AuditReport } from './AuditReport.jsx'
 import { FolderIcon, PlusIcon, XIcon } from './icons.jsx'
@@ -80,7 +81,7 @@ export function AddSkillDialog({ api, t, pickDirectory, onClose, onAdded }) {
     else validate()
   }
 
-  return (
+  return createPortal((
     <div className="skm-overlay" onMouseDown={event => { if (event.target === event.currentTarget && !busy) onClose() }}>
       <div className="skm-dialog skm-addDialog" role="dialog" aria-modal="true" aria-label={t('addTitle')}>
         <header className="skm-dialogHead">
@@ -127,5 +128,5 @@ export function AddSkillDialog({ api, t, pickDirectory, onClose, onAdded }) {
         </footer>
       </div>
     </div>
-  )
+  ), document.body)
 }
