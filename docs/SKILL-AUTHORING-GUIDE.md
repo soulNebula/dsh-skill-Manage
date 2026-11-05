@@ -11,6 +11,17 @@
 > 4. **文字优先**：写清“为什么这样组织、整条链路怎么走、生产中什么时候用”；
 > 5. 代码只保留能说明方法的最小片段，以及让骨架能验证的最小实现。
 
+## 命名：文件夹必须带 `dsh-`
+
+框架 skill 的**文件夹名、frontmatter `name`、`framework.json.id` 必须一致，并且以 `dsh-` 开头**：
+
+```text
+mobile-local-engine-framework   →   dsh-mobile-local-engine-framework
+my-framework                    →   dsh-my-framework
+```
+
+只使用小写字母、数字、连字符；不要下划线、中文、空格。`SKILL.md` 的 `name`、文件夹名、`framework.json.id` 三者不一致时，Skill 管理会告警或命令不稳定。
+
 ---
 
 ## 0. 先判断值不值得提取
@@ -32,7 +43,7 @@
 提取完成后，新框架应该是这个形状（与当前项目一致）：
 
 ```text
-<framework-id>/
+<dsh-framework-id>/
 ├─ SKILL.md                     # 整体框架 + 整条链路 + 怎么想 + 怎么用
 ├─ framework.json               # 本框架自己的层、变量、intake、验收
 ├─ references/
@@ -149,7 +160,7 @@
 
 ```bash
 node scripts/new-framework.mjs <new-skill-dir> \
-  --id my-framework \
+  --id dsh-my-framework \
   --name "我的框架" \
   --description "一句话说明它做什么、什么时候用"
 ```
@@ -174,7 +185,7 @@ node scripts/new-framework.mjs <new-skill-dir> \
 {
   "format": "dsh-framework-pack",
   "version": 1,
-  "id": "my-framework",
+  "id": "dsh-my-framework",
   "name": "我的框架",
   "description": "一句话说明它做什么、什么时候用",
   "stack": ["DeepSeek Harness", "Node", "React"],
