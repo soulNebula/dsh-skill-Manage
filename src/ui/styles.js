@@ -11,6 +11,7 @@ export const STYLE = `
   --skm-danger: var(--dsw-alias-state-error-primary, #c0392b);
   --skm-warn: var(--dsw-alias-state-warn-primary, #a86700);
   --skm-ok: var(--dsw-alias-state-success-primary, #2e7d32);
+  --skm-on-brand: var(--dsw-alias-label-primary-inverted, #fff);
   font-family: var(--dsw-alias-font-sans, system-ui, -apple-system, "Segoe UI", sans-serif);
   font-size: 14px;
   line-height: 1.5;
@@ -80,10 +81,10 @@ export const STYLE = `
 }
 .skm-btn:hover:not(:disabled) { border-color: var(--skm-brand); color: var(--skm-brand); }
 .skm-btn:disabled { opacity: .45; cursor: default; }
-.skm-btn.is-primary { background: var(--skm-brand); border-color: transparent; color: #fff; }
-.skm-btn.is-primary:hover:not(:disabled) { color: #fff; filter: brightness(1.06); }
+.skm-btn.is-primary { background: var(--skm-brand); border-color: transparent; color: var(--skm-on-brand); }
+.skm-btn.is-primary:hover:not(:disabled) { color: var(--skm-on-brand); filter: brightness(1.06); }
 .skm-btn.is-danger { color: var(--skm-danger); border-color: color-mix(in srgb, var(--skm-danger) 38%, transparent); }
-.skm-btn.is-danger:hover:not(:disabled) { color: #fff; background: var(--skm-danger); border-color: var(--skm-danger); }
+.skm-btn.is-danger:hover:not(:disabled) { color: var(--skm-on-brand); background: var(--skm-danger); border-color: var(--skm-danger); }
 .skm-btn.is-ghostDanger { color: var(--skm-danger); background: transparent; }
 .skm-btn.is-small { padding: 4px 9px; font-size: 12px; }
 
@@ -276,7 +277,7 @@ export const STYLE = `
   width: 16px;
   height: 16px;
   border-radius: 50%;
-  background: #fff;
+  background: var(--skm-on-brand);
   box-shadow: 0 1px 2px rgba(0, 0, 0, .22);
   transition: transform .15s;
 }
@@ -564,7 +565,7 @@ export const STYLE = `
   cursor: pointer;
 }
 .skm-segmented button:hover { color: var(--skm-text); background: var(--skm-surface); }
-.skm-segmented button.is-active { color: #fff; background: var(--skm-brand); }
+.skm-segmented button.is-active { color: var(--skm-on-brand); background: var(--skm-brand); }
 .skm-rangeRow { display: flex; align-items: center; gap: 10px; }
 .skm-range { flex: 1 1 auto; min-width: 120px; accent-color: var(--skm-brand); }
 .skm-rangeValue { min-width: 64px; text-align: right; font-variant-numeric: tabular-nums; color: var(--skm-muted); font-size: 12.5px; }

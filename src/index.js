@@ -128,9 +128,9 @@ export function apply(ctx, config = {}) {
   ctx.inject(['connection', 'webServer'], connectionCtx => {
     const connection = connectionCtx.connection
     connectionCtx.effect(
-      () => (typeof connection.rpc?.handle === 'function'
-        ? connection.rpc.handle(CHANNEL, handler)
-        : connection.register(connectionCtx, CHANNEL, handler)),
+      () => (typeof connection.register === 'function'
+        ? connection.register(connectionCtx, CHANNEL, handler)
+        : connection.rpc.handle(CHANNEL, handler)),
       'skill-manage: rpc channel',
     )
   })
