@@ -39,3 +39,8 @@ test('non-owner peers are refused', async () => {
   assert.equal(result.ok, false)
   assert.equal(result.error.code, 'app/forbidden')
 })
+
+test('accepts the nested owner principal used by DSH 0.2.1', async () => {
+  const result = await handler('demo/echo', { value: 1 }, undefined, { principal: { kind: 'owner' } })
+  assert.deepEqual(result, { ok: true, value: { echo: 1 } })
+})

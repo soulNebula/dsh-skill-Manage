@@ -3,8 +3,14 @@
 // leave the host.
 import { AppError, publicCode, publicMessage } from './errors.js'
 
+// DSH 0.2.1 passes `principal: { kind: 'owner' }` on the peer object. Older
+// hosts used a flat `principal: 'owner'`; accept both shapes (and no peer at
+// all for direct in-process calls).
 export function isOwner(peer) {
-  return peer === undefined || peer?.principal === 'owner' || peer?.kind === 'owner'
+  return peer === undefined
+    || peer?.principal === 'owner'
+    || peer?.principal?.kind === 'owner'
+    || peer?.kind === 'owner'
 }
 
 /**
