@@ -347,6 +347,8 @@ export const STYLE = `
 .skm-auditBlock ul { margin: 0; padding-left: 18px; font-size: 12.5px; color: var(--skm-danger); }
 .skm-auditBlock.is-warn ul { color: var(--skm-warn); }
 .skm-auditClean { margin: 0; color: var(--skm-ok); font-size: 12.5px; }
+.skm-auditDialogMeta { margin: 0; color: var(--skm-muted); font-size: 12.5px; }
+.skm-auditDialogList { margin: 0; padding-left: 18px; color: var(--skm-danger); font-size: 12.5px; }
 
 .skm-files {
   flex: 1 1 auto;

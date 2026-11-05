@@ -33,6 +33,7 @@ export function SkillDetail({ skill, api, t, onChanged, onRemoved, notify }) {
   const [saving, setSaving] = useState(false)
   const [busy, setBusy] = useState('')
   const [auditReport, setAuditReport] = useState(null)
+  const [auditNotice, setAuditNotice] = useState(null)
   const [auditError, setAuditError] = useState('')
   const [commandDraft, setCommandDraft] = useState(skill.command)
   const [confirm, setConfirm] = useState(null)
@@ -223,6 +224,7 @@ export function SkillDetail({ skill, api, t, onChanged, onRemoved, notify }) {
     try {
       const result = await api.call('skill/audit', { id: skill.id })
       setAuditReport(result.report)
+      setAuditNotice(result.report)
       onChanged(result.skill)
     } catch (err) {
       setAuditError(err.message)
@@ -401,6 +403,40 @@ export function SkillDetail({ skill, api, t, onChanged, onRemoved, notify }) {
           </div>
         </div>
       </section>
+
+      {auditNotice && (
+        <ConfirmDialog
+          title={auditNotice.ok ? t('auditOk') : t('auditFail')}
+          confirmLabel={t('close')}
+          cancelLabel={null}
+          danger={!auditNotice.ok}
+          icon={auditNotice.ok ? <ShieldIcon size={18} /> : undefined}
+          onConfirm={() => setAuditNotice(null)}
+          onCancel={() => setAuditNotice(null)}
+        >
+          <p className="skm-auditDialogMeta">
+            {auditNotice.engine === 'python'
+              ? t('auditEnginePython', { version: auditNotice.python ?? '' })
+              : t('auditEngineJs')}
+            {' · '}
+            {t('auditFiles', {
+              count: auditNotice.files?.count ?? 0,
+              size: formatBytes(auditNotice.files?.bytes ?? 0),
+            })}
+          </p>
+          {auditNotice.ok
+            ? <p>{t('auditNoIssues')}</p>
+            : (
+              <ul className="skm-auditDialogList">
+                {(auditNotice.errors ?? []).map((message, index) => <li key={index}>{message}</li>)}
+              </ul>
+            )}
+          {auditNotice.warnings?.length > 0 && (
+            <p className="skm-inlineWarn">{t('auditWarnings')}: {auditNotice.warnings.length}</p>
+          )}
+          <p className="skm-hint">{t('auditDialogHint')}</p>
+        </ConfirmDialog>
+      )}
 
       {confirm === 'remove' && (
         <ConfirmDialog
